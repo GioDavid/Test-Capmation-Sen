@@ -7,6 +7,7 @@ import { FilterForm } from './FilterForm';
 
 export const Search = (props) => {
   const [price, setPrice] = useState({ priceFrom: '', priceTo: '' });
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const [columns, setColumns] = useState({
     id: true,
@@ -20,29 +21,47 @@ export const Search = (props) => {
     // TODO: implement price change handler
   }
 
-  const onCheckboxClick = (name, checked) => {
+  const onCheckboxClick = (value, column) => {
     // TODO: implement checkbox click handler
+    const cols = columns;
+    cols[column] = value;
+    setColumns(columns);
   }
 
-  const filterProducts = () => {
+  const filterProducts = (value, column) => {
+ 
     // TODO: implement handler for filtering products by price range
   }
 
-  let displayedProducts = [];
+
+  let displayedProducts = props.products.filter((prod) => {
+    if (price?.priceFrom && price?.priceTo) {
+      return prod.price >= price.priceFrom && prod.price <= price.priceTo;
+    } else if (price?.priceFrom) {
+      return prod.price >= price.priceFrom;
+    } else if (price?.priceTo) {
+      return prod.price <= price.priceTo;
+    } else {
+      return true;
+    }
+  });
+
+  const cols = ['id', 'name', 'department', 'price'];
+
   return (
     <div className="Products">
       <FilterForm
-        priceFrom={''}
-        priceTo={''}
-        onPriceInputChange={''} />
+        priceFrom={price?.priceFrom}
+        priceTo={price?.priceTo}
+        onPriceInputChange={setPrice} />
 
       <ToggleColumns
-        onCheckboxClick={''}
-        columns={''} />
+        onCheckboxClick={onCheckboxClick}
+        columns={cols} />
 
       <ProductList
         products={displayedProducts}
-        columns={''} />
+        columns={cols.filter(col => columns[col])} />
     </div>
   );
 }

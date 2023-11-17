@@ -1,15 +1,16 @@
 import React from 'react'
 
 export const ToggleColumns = (props) => {
-  const onCheckboxClick = (e) => {
+  const onCheckboxClick = (e, column) => {
     // TODO: implement checkbox click handler
+    props?.onCheckboxClick(e.target.checked, column);
   }
 
   // TODO: Bind handlers and props
   return (
     <div className="toggle-columns">
       { 
-        Object.keys(props.columns).map((column, index) => {
+        props.columns.map((column, index) => {
           return ( 
           <div key={index}>
             <label htmlFor={column}>
@@ -18,7 +19,9 @@ export const ToggleColumns = (props) => {
             <input
               id={column}
               name={column}
-              type="checkbox" />
+              type="checkbox"
+              onChange={e => onCheckboxClick(e, column)}
+               />
           </div>)
         })
       }

@@ -7,18 +7,22 @@ export const ProductList = (props) => {
   return (
     <div id="product-list">
       <header>
-        <strong>Product List (0 items)</strong>
+        <strong>{`Product List (${props?.products?.length || 0} items)`}</strong>
       </header>
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Price</th>
+            {props?.columns?.map((col) => <td>{col}</td>)}
           </tr>
         </thead>
         <tbody>
+          {props?.products.map((prod) => {
+            return (
+              <tr key={prod.id}>
+                {props?.columns?.map((col) => <td>{prod?.[col]}</td>)}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
